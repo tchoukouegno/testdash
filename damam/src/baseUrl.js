@@ -1,0 +1,1 @@
+export const baseUrl= 'https://www.damam.zeta-messenger.com/api';
