@@ -12,6 +12,7 @@ import StatData from "./StatData";
 import MonthlyTransactionChart from './MonthlyTransactionChart';
 import UserTable from './UserTable';
 import { getStats } from '../modules/getStats';
+import {Loader} from "./Loader";
 
 
 
@@ -47,6 +48,7 @@ export function Dashboard() {
     const [transactionData, setTransactionData] = useState([])
 
     const [statNumber, setStatNumber] = useState([])
+    const [isLoading , setIsLoading] = useState(true)
 
     useEffect(() => {
 
@@ -59,6 +61,7 @@ export function Dashboard() {
 
             setStatNumber(response)
             setTransactionData(response.graph)
+            setIsLoading(false);
 
 
 
@@ -108,7 +111,7 @@ export function Dashboard() {
 
         <div className="dashboard-container">
 
-
+             {isLoading&& <Loader text="Chargement..." />}
             <HeaderDash dashboardTitle={"Dashboard"}/>
 
             <div className='dashboard-body'>

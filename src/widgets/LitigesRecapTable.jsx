@@ -5,6 +5,7 @@ import ArrowLineLeft from "../assets/icons/ArrowLineLeft.svg";
 import ArrowLineRight from "../assets/icons/ArrowLineRight.svg";
 import direction from "../assets/icons/direction.svg";
 import search from "../assets/icons/search.png";
+import {Loader} from "./Loader";
 
 const LitigesRecapTable = () => {
   const [data, setData] = useState([]);
@@ -163,7 +164,7 @@ const LitigesRecapTable = () => {
 
       <div className="user-table">
         {isLoading ? (
-          <div className="loader">Chargement...</div>
+          <Loader text="Chargement..." />
         ) : (
           <table>
             <thead>

@@ -8,13 +8,14 @@ import { updateAdminData } from "../modules/updateAdminData"; // Créez cette fo
 import info from "../assets/icons/info.svg";
 import { snackbar } from "../widgets/snackbar";
 import {checkChangePassword} from "../modules/checkChangePassword";
-
+import {Loader} from "./Loader";
 
 
 
 
 export function Parameter() {
   const [percentData, setPercentData] = useState({});
+  const [isLoading , setIsLoading] = useState(true)
   const [adminData, setAdminData] = useState({
     email: "",
     oldPassword:"",
@@ -44,6 +45,7 @@ export function Parameter() {
         email: response.email || "",
         password: "", // Le mot de passe n'est jamais récupéré pour des raisons de sécurité
       });
+      setIsLoading(false);
     });
   }, []);
 
@@ -172,6 +174,7 @@ export function Parameter() {
 
   return (
     <div className="dashboard-container">
+       {isLoading&& <Loader text="Chargement..." />}
       <HeaderDash dashboardTitle={"Dashboard / Paramètres"} />
 
       <div className="dashboard-body">

@@ -1,10 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback,useRef  } from "react";
 import "../styles/index.css";
 import io from "socket.io-client";
 import doc from "../assets/icons/doc.svg";
 import send from "../assets/icons/send.svg";
 import { getMessages } from "../modules/getMessages";
 import { getListMessages } from "../modules/getListMessages";
+import {Loader} from "./Loader";
 
 const LitigeMessages = ({ Token, }) => {
   const [conversations, setConversations] = useState([]);
@@ -13,6 +14,28 @@ const LitigeMessages = ({ Token, }) => {
   const [messageInput, setMessageInput] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
+  const [isLoading , setIsLoading] = useState(true)
+
+  const formatRelativeTime = (timestamp) => {
+  const now = new Date();
+  const time = new Date(timestamp);
+  const diff = Math.floor((now - time) / 1000); // en secondes
+
+  if (diff < 60) return "il y a quelques secondes";
+  if (diff < 3600) return `il y a ${Math.floor(diff / 60)} min`;
+  if (diff < 86400) return `il y a ${Math.floor(diff / 3600)} h`;
+  if (diff < 3 * 86400) return `il y a ${Math.floor(diff / 86400)} jr`;
+
+  return time.toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
+};
+
+const messagesEndRef = useRef(null);
+
+const chatContentRef = useRef(null);
 
   const socket = io("http://46.202.130.175:3000");
 
@@ -32,13 +55,11 @@ const LitigeMessages = ({ Token, }) => {
           name: item.name,
           avatar: item.photo,
           lastMessage: item.last_message || "Pas de message",
-          time: new Date(item.last_message_date).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          }),
+          time:formatRelativeTime(item.last_message_date),
         }));
         setConversations(formattedConversations);
         setFilteredConversations(formattedConversations);
+        setIsLoading(false);
         console.log(conversations)
       }
     } catch (error) {
@@ -99,12 +120,26 @@ const LitigeMessages = ({ Token, }) => {
         }));
         console.log(formattedMessages)
         setMessages(formattedMessages);
+        setTimeout(() => scrollToBottomFast(), 10);
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des messages :", error);
     }
   };
 
+  const scrollToBottomFast = () => {
+    if (chatContentRef.current) {
+      chatContentRef.current.scrollTop = chatContentRef.current.scrollHeight;
+    }
+  };
+  
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  
   const groupMessagesByDate = (messages) => {
     return messages.reduce((groups, message) => {
       const date = message.date;
@@ -251,6 +286,8 @@ const LitigeMessages = ({ Token, }) => {
 
   return (
     <div className="litige-container">
+      {isLoading&& <Loader text="Chargement des messages..." />}
+
       <div className="litige-sidebar">
         <div className="litige-header">
           <span>Messages</span>
@@ -303,7 +340,7 @@ const LitigeMessages = ({ Token, }) => {
             <h3>{selectedConversation?.name || "Conversation"}</h3>
           </div>
         </div>
-        <div className="litige-chat-content">
+        <div className="litige-chat-content" ref={chatContentRef}>
           {Object.keys(groupedMessages).map((date) => (
             <div key={date}>
               <div className="litige-message-date">{date}</div>
@@ -327,9 +364,13 @@ const LitigeMessages = ({ Token, }) => {
                   </div>
                 </div>
               ))}
+              {/* <div ref={messagesEndRef}></div> */}
             </div>
+            
           ))}
         </div>
+        
+
         <div className="litige-chat-input">
           <label htmlFor="file-upload" className="custom-file-upload">
             <img src={doc} alt="Attachment" />

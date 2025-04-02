@@ -299,6 +299,7 @@ input:focus {
 
     width: 85%;
     margin-left:235px;
+    position: relative;
 
 }
 
@@ -2429,6 +2430,7 @@ table {
   width: 100%;
   background-color: #f8f9fa;
   overflow: hidden;
+  position: relative;
 }
 
 /* Barre latérale */
@@ -2745,4 +2747,44 @@ table {
 body {
   -webkit-overflow-scrolling: touch; /* Smooth scrolling pour iOS */
 }
+
+
+.custom-loader-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  height: 100%;
+  width: 100%;
+
+  position: absolute; /* optionnel si tu veux centrer par rapport à un parent */
+  top: 0;
+  left: 0;
+
+  background: rgba(255, 255, 255, 0.7); /* optionnel : effet semi-flouté */
+  z-index: 999;
+ 
+}
+
+.custom-loader {
+  border: 6px solid #f3f3f3;
+  border-top: 6px solid #E94E1B; /* couleur principale */
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+}
+
+.custom-loader-text {
+  margin-top: 10px;
+  color: #E94E1B;
+  font-weight: bold;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
   

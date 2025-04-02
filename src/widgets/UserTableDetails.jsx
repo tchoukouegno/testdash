@@ -8,6 +8,7 @@ import info from "../assets/icons/info.svg";
 import { snackbar } from "../widgets/snackbar";
 import direction from "../assets/icons/direction.svg";
 import search from "../assets/icons/search.png";
+import {Loader} from "./Loader";
 
 const UserTableDetails = () => {
   const [data, setData] = useState([]);
@@ -268,7 +269,7 @@ console.log(response)
 </div>
     <div className="user-table">
       {isLoading ? (
-        <div className="loader">Chargement...</div>
+        <Loader text="Chargement..." />
       ) : (
         <table>
           <thead>

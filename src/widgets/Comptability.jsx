@@ -14,6 +14,7 @@ import RevenueChart from './RevenueChart';
 import Commission from './Commission'
 import SubAccounts from './SubAccounts';
 import { getCommission } from "../modules/getCommission";
+import {Loader} from "./Loader";
 
 
 
@@ -30,6 +31,7 @@ export function Comptability() {
     const [nextForm, setNextForm] = useState(true);
 
     const [selectedItem, setSelectedItem] = useState(null);
+    const [isLoading , setIsLoading] = useState(true)
 
     const [total, setTotal] = useState(0);
     const [data, setData] = useState({
@@ -49,6 +51,7 @@ export function Comptability() {
         console.log(response)
 
         setData(response);
+        setIsLoading(false);
 
 
     })
@@ -71,7 +74,7 @@ export function Comptability() {
 
         <div className="dashboard-container">
 
-
+                 {isLoading&& <Loader text="Chargement..." />}
             <HeaderDash dashboardTitle={"Dashboard / Comptabilité"}/>
 
             <RevenueChart/>
