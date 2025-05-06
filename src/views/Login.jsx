@@ -127,7 +127,7 @@ export function Login() {
 
                                 <div className="input-wrapper">
                                     <label htmlFor="password">Entrer votre mot de passe</label>
-                                    <input  id='password' value={dataConnect.password} onChange={handleChange} className='input-login'   />
+                                    <input  id='password' value={dataConnect.password} onChange={handleChange} className='input-login' type="password"   />
                                     {/* <input type={isShowPassword ?  "text": "password"} className='inputLogin' id="password" value={dataSign.password}  onChange={handleChange} /> */}
                                     {/* <img src={isShowPassword ? eyeSolid : eyeSlash} className= {isShowPassword ? 'eyeSolid': 'eyeSlash'} onClick={handleShowPassword}     /> */}
                                     {/* autocomplete="new-password" */}
